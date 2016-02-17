@@ -17,10 +17,10 @@ class Chat():
         
     def run(self):
         handlers = {
-            '/exit': self._exit,
-            '/quit': self._quit,
-            '/join': self._join,
-            '/send': self._send
+            'exit': self._exit,
+            'quit': self._quit,
+            'join': self._join,
+            'send': self._send
         }
         self.__running = True
         self.__address = None
