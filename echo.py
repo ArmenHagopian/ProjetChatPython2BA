@@ -1,4 +1,11 @@
+<<<<<<< HEAD
 
+=======
+#!/usr/bin/env python3
+# echo.py
+# author: Sébastien Combéfis
+# version: February 15, 2016
+>>>>>>> 7c3c9f64b9584d124829eae09039eb935524fbb0
 
 import socket
 import sys
@@ -9,7 +16,11 @@ class EchoServer():
     def __init__(self):
         self.__s = socket.socket()
         self.__s.bind(SERVERADDRESS)
+<<<<<<< HEAD
 
+=======
+        
+>>>>>>> 7c3c9f64b9584d124829eae09039eb935524fbb0
     def run(self):
         self.__s.listen()
         while True:
@@ -19,7 +30,11 @@ class EchoServer():
                 client.close()
             except OSError:
                 print('Erreur lors de la réception du message.')
+<<<<<<< HEAD
 
+=======
+    
+>>>>>>> 7c3c9f64b9584d124829eae09039eb935524fbb0
     def _receive(self, client):
         chunks = []
         finished = False
@@ -34,7 +49,11 @@ class EchoClient():
     def __init__(self, message):
         self.__message = message
         self.__s = socket.socket()
+<<<<<<< HEAD
 
+=======
+    
+>>>>>>> 7c3c9f64b9584d124829eae09039eb935524fbb0
     def run(self):
         try:
             self.__s.connect(SERVERADDRESS)
@@ -42,7 +61,11 @@ class EchoClient():
             self.__s.close()
         except OSError:
             print('Serveur introuvable, connexion impossible.')
+<<<<<<< HEAD
 
+=======
+    
+>>>>>>> 7c3c9f64b9584d124829eae09039eb935524fbb0
     def _send(self):
         totalsent = 0
         msg = self.__message
