@@ -15,14 +15,13 @@ class AdderServer():
     def __init__(self):
         self.__s = socket.socket()
         self.__s.bind(SERVERADDRESS)
-        self.__a = 2
+        print('Clients connectés : ')
 
     def run(self):
         self.__s.listen()
         while True:
             client, addr = self.__s.accept()
             try:
-                self.__a += 20
                 self._handle(client)
                 client.close()
             except OSError:
@@ -32,18 +31,17 @@ class AdderServer():
         size = struct.unpack('I', client.recv(4))[0]
         data = pickle.loads(client.recv(size))
         result = ''
-#Changer la ligne qui suit !!!
-        clientslist["connectedclients"]['{} {}'.format(socket.gethostname(), self.__a)] = 2
+        print('\t' + data[0], data[1])
         for i in clientslist["connectedclients"]:
-            result += '{} {}'.format('\n' + '\t' + str(i), str(clientslist["connectedclients"][i]))
-        print('Clients connectés : {} = {}'.format(data, result))
+            result += '{} {}'.format('\n' + '\t' + str(clientslist["connectedclients"][i]), str(i))
+        clientslist["connectedclients"][data[1]] = data[0]
         client.send(str(result).encode())
 
 
 class AdderClient():
 
-    def __init__(self, message):
-        self.__data = [int(x) for x in message]
+    def __init__(self, address):
+        self.__data = [x for x in address]
         self.__s = socket.socket()
 
     def run(self):
@@ -140,8 +138,20 @@ class Chat():
 
 if __name__ == '__main__':
     if len(sys.argv) == 2 and sys.argv[1] == 'server':
-        AdderServer().run()
-    elif len(sys.argv) > 2 and sys.argv[1] == 'client':
-        AdderClient(sys.argv[2:]).run()
+        try:
+            AdderServer().run()
+        except:
+            print("Veuillez entrer la commande sous la forme :\n"
+                  "'python3 adder.py peer «Votre Adresse IP» «Numéro de Port»' ")
+    elif len(sys.argv) < 6 and sys.argv[1] == 'client':
+        if sys.argv[2] == 'ECAM':
+            AdderClient(sys.argv[3:]).run()
+        else:
+            print("Veuillez entrer un mot de passe valide ou entrer la commande sous la forme :\n"
+                  "'python3 adder.py client «MotDePasse» «Votre Adresse IP» «Numéro de Port»' ")
     elif len(sys.argv) == 4 and sys.argv[1] == 'peer':
-        Chat(sys.argv[2], int(sys.argv[3])).run()
+        try:
+            Chat(sys.argv[2], int(sys.argv[3])).run()
+        except:
+            print("Veuillez entrer la commande sous la forme :\n"
+                  "'python3 adder.py peer «Votre Adresse IP» «Numéro de Port»' ")
