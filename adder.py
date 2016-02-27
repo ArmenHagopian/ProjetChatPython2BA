@@ -19,7 +19,7 @@ class AdderServer():
         self.__s = socket.socket()
         self.__s.bind(SERVERADDRESS)
         print('Clients connectés : ')
-
+        
     def run(self):
         self.__s.listen()
         while True:
