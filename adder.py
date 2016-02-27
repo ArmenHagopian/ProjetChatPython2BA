@@ -1,3 +1,6 @@
+# adder.py
+# authors: Armen Hagopian, Gaétan Guru
+# version: February 26, 2016
 
 import threading
 import pickle
@@ -28,13 +31,21 @@ class AdderServer():
                 print('Erreur lors du traitement de la requête du client.')
 
     def _handle(self, client):
+        clientnumber = 1
         size = struct.unpack('I', client.recv(4))[0]
         data = pickle.loads(client.recv(size))
         result = ''
-        print('\t' + data[0], data[1])
+        ip = data[0]
+        port = data[1]
+        if len(data[0]) < len(data[1]):
+            ip = data[1]
+            port = data[0]
+        print('\t' + ip, port)
         for i in clientslist["connectedclients"]:
-            result += '{} {}'.format('\n' + '\t' + str(clientslist["connectedclients"][i]), str(i))
-        clientslist["connectedclients"][data[1]] = data[0]
+            result += '\n' + '\t' + 'Client n°{} : Adresse IP : {} \n\t\t     Numéro de port : {}'.format(
+            clientnumber, str(clientslist["connectedclients"][i]), str(i))
+            clientnumber += 1
+        clientslist["connectedclients"][port] = ip
         client.send(str(result).encode())
 
 
@@ -138,11 +149,7 @@ class Chat():
 
 if __name__ == '__main__':
     if len(sys.argv) == 2 and sys.argv[1] == 'server':
-        try:
-            AdderServer().run()
-        except:
-            print("Veuillez entrer la commande sous la forme :\n"
-                  "'python3 adder.py peer «Votre Adresse IP» «Numéro de Port»' ")
+        AdderServer().run()
     elif len(sys.argv) < 6 and sys.argv[1] == 'client':
         if sys.argv[2] == 'ECAM':
             AdderClient(sys.argv[3:]).run()
@@ -150,8 +157,5 @@ if __name__ == '__main__':
             print("Veuillez entrer un mot de passe valide ou entrer la commande sous la forme :\n"
                   "'python3 adder.py client «MotDePasse» «Votre Adresse IP» «Numéro de Port»' ")
     elif len(sys.argv) == 4 and sys.argv[1] == 'peer':
-        try:
-            Chat(sys.argv[2], int(sys.argv[3])).run()
-        except:
-            print("Veuillez entrer la commande sous la forme :\n"
-                  "'python3 adder.py peer «Votre Adresse IP» «Numéro de Port»' ")
+        Chat(sys.argv[2], int(sys.argv[3])).run()
+
