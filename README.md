@@ -8,8 +8,9 @@ To connect a client to the server, you can run adder.py in the Terminal like thi
 Warning : You must give a password as third argument to access to the connected clients list, in this case the password is ECAM, you can easily change it in the file.
 To start a peer-to-peer chat, you can run adder.py in the Terminal like this : python3 adder.py peer 249.141.3.5 7000. The second argument is "peer" and the last two elements are the IP address and the port you want to use.
 
-#Communication Protocol
+#Communication Protocols
 
+UDP (User Datagram Protocol) protocol for the peer-to-peer communication and TCP (Transmission Control Protocol) protocol for the client/server one.
 
 #Tests
-All the programs have been tested on OSX.
+All the programs have been tested on OSX Lion and El Capitan with python 3.
