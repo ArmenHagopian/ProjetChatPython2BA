@@ -7,11 +7,17 @@ To connect the server, you can run adder.py in the Terminal like this : "python3
 To connect a client to the server, you can run adder.py in the Terminal like this : "python3 adder.py client ECAM 249.141.3.5 8000".The second argument is "server" and the last two elements are the IP address and the port you want to use.
 Warning : You must give a password as third argument to access to the connected clients list, in this case the password is ECAM, you can easily change it in the file.
 To start a peer-to-peer chat, you can run adder.py in the Terminal like this : python3 adder.py peer 249.141.3.5 7000. The second argument is "peer" and the last two elements are the IP address and the port you want to use.
-To be able to communicate with others, 4 functions are implemented in the class 'chat()'.
+
+These are the different functionalities you can use when you launch the peer-to-peer connection:
+
 The command /join allows you to connect to someone who's connected to the server. 
-To join someones computer insert "/join {ip_address} {port}" in the terminal.
-The command /send allows you to send data towards a machine.
+
+To join someones computer, insert "/join {ip_address} {port}" in the terminal.
+
+The command /send allows you to send a message to another machine you're connected to.
+
 The command /quit allows you to exit a peer to peer connection.
+
 The command /exit allows you to exit the program.
 
 #Communication Protocols
