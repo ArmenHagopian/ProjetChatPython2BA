@@ -20,6 +20,8 @@ class AdderServer():
         self.__s.bind(SERVERADDRESS)
         print('Clients connectés : ')
 
+#The fonction run() listens to a client. When there's a client connected, run() triggers the function handle.
+
     def run(self):
         self.__s.listen()
         while True:
@@ -29,6 +31,10 @@ class AdderServer():
                 client.close()
             except OSError:
                 print('Erreur lors du traitement de la requête du client.')
+
+#The function handle() saves the ip address, the port, the name of the person if precised into a dictionnary. 
+#Then, It immediately send's back the dictionnary to the active client who's ready to chat.             
+
 
     def _handle(self, client):
         clientnumber = 1
@@ -68,6 +74,8 @@ class AdderClient():
     def __init__(self, address):
         self.__data = [x for x in address]
         self.__s = socket.socket()
+        
+#The function run(self) triggers the function compute(self) if everything goes as expected. In the other case, It rejects an exception. 
 
     def run(self):
         try:
@@ -76,6 +84,9 @@ class AdderClient():
             self.__s.close()
         except OSError:
             print('Serveur introuvable, connexion impossible.')
+            
+ #The function compute(self) sends the ip address, the port, the name (if precised) of the client to the server. 
+#It also returns the data that is sent from the server.
 
     def _compute(self):
         try:
@@ -98,6 +109,8 @@ class Chat():
         s.bind((host, port))
         self.__s = s
         print('Écoute sur {}:{}'.format(host, port))
+
+#The function run(self) triggers an infinite loop in which It is possible to activate 4 commands. 
 
     def run(self):
         handlers = {
@@ -122,14 +135,19 @@ class Chat():
                     print("Erreur lors de l'exécution de la commande.")
             else:
                 print('Commande inconnue:', command)
+#The function _exit(self) exits the running program.
 
     def _exit(self):
         self.__running = False
         self.__address = None
         self.__s.close()
 
+#The function _quit(self) closes the connection between the 2 peers.
+
     def _quit(self):
         self.__address = None
+
+#The function _join(self) enables us to join another peer 
 
     def _join(self, param):
         tokens = param.split(' ')
@@ -139,6 +157,9 @@ class Chat():
                 print('Connecté à {}:{}'.format(*self.__address))
             except OSError:
                 print("Erreur lors de l'envoi du message.")
+
+#The function _send(self,param) enables us to send data towards a peer 
+
 
     def _send(self, param):
         if self.__address is not None:
@@ -150,6 +171,8 @@ class Chat():
                     totalsent += sent
             except OSError:
                 print('Erreur lors de la réception du message.')
+
+#The function _receive(self) enables us to receive data from a peer
 
     def _receive(self):
         while self.__running:
