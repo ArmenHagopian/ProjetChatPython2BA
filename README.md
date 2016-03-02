@@ -9,7 +9,7 @@ Warning : You must give a password as third argument to access to the connected 
 To start a peer-to-peer chat, you can run adder.py in the Terminal like this : python3 adder.py peer 249.141.3.5 7000. The second argument is "peer" and the last two elements are the IP address and the port you want to use.
 To be able to communicate with others, 4 functions are implemented in the class 'chat()'.
 The command /join allows you to connect to someone who's connected to the server. 
-To join someones computer insert "/join <<ip_address>> <<port>>" in the terminal.
+To join someones computer insert "/join {ip_address} {port}" in the terminal.
 The command /send allows you to send data towards a machine.
 The command /quit allows you to exit a peer to peer connection.
 The command /exit allows you to exit the program.
