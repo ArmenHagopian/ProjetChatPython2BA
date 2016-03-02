@@ -33,7 +33,7 @@ class AdderServer():
                 print('Erreur lors du traitement de la requête du client.')
 
 #The function handle() saves the ip address, the port, the name of the person if precised into a dictionnary. 
-#Then, It immediately send's back the dictionnary to the active client who's ready to chat.             
+#Then, It immediately sends back the dictionnary to the active client who's ready to chat.
 
 
     def _handle(self, client):
@@ -191,6 +191,7 @@ if __name__ == '__main__':
 
     elif len(sys.argv) == 5 and sys.argv[1] == 'client':
         if sys.argv[2] == 'ECAM':
+# We change the parameters of the classes depending on which parameter (ip address or port) the user gives first
             if len(sys.argv[3]) > len(sys.argv[4]):
                 AdderClient(sys.argv[3:]).run()
                 Chat(sys.argv[3], int(sys.argv[4])).run()
@@ -199,13 +200,25 @@ if __name__ == '__main__':
                 Chat(sys.argv[4], int(sys.argv[3])).run()
     elif len(sys.argv) == 6 and sys.argv[1] == 'client':
         if sys.argv[2] == 'ECAM':
+# We change the parameters of the classes depending on which parameter (ip address or port) the user gives first
             if len(sys.argv[3]) > len(sys.argv[4]):
                 AdderClient(sys.argv[3:]).run()
                 Chat(sys.argv[3], int(sys.argv[4])).run()
             elif len(sys.argv[3]) < len(sys.argv[4]):
                 AdderClient(sys.argv[3:]).run()
                 Chat(sys.argv[4], int(sys.argv[3])).run()
-
+    elif len(sys.argv) == 8 and sys.argv[1] == 'client':
+        if sys.argv[2] == 'ECAM':
+# In case the server is on another computer (with a different address), the client specifies the server's ip
+# address and port
+            if len(sys.argv[3]) > len(sys.argv[4]):
+                SERVERADDRESS = (sys.argv[5], sys.argv[6])
+                AdderClient(sys.argv[3:5]).run()
+                Chat(sys.argv[3], int(sys.argv[4])).run()
+            elif len(sys.argv[3]) < len(sys.argv[4]):
+                SERVERADDRESS = (sys.argv[5], sys.argv[6])
+                AdderClient(sys.argv[3:5]).run()
+                Chat(sys.argv[4], int(sys.argv[3])).run()
         else:
             print("Veuillez entrer un mot de passe valide ou entrer la commande sous la forme :\n"
                   "'python3 adder.py client «MotDePasse» «Votre Adresse IP» «Numéro de Port»' ")
