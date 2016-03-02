@@ -19,7 +19,7 @@ class AdderServer():
         self.__s = socket.socket()
         self.__s.bind(SERVERADDRESS)
         print('Clients connectés : ')
-        
+
     def run(self):
         self.__s.listen()
         while True:
@@ -41,11 +41,25 @@ class AdderServer():
             ip = data[1]
             port = data[0]
         print('\t' + ip, port)
-        for i in clientslist["connectedclients"]:
-            result += '\n' + '\t' + 'Client n°{} : Adresse IP : {} \n\t\t     Numéro de port : {}'.format(
-            clientnumber, str(clientslist["connectedclients"][i]), str(i))
-            clientnumber += 1
-        clientslist["connectedclients"][port] = ip
+        if clientslist["connectedclients"]:
+            clients = clientslist["connectedclients"]
+            for i in clientslist["connectedclients"]:
+                if len(clients[i]) == 3:
+                    result += '\n' + '\t' + 'Client n°{}, {} : Adresse IP : {} \n\t\t     Numéro de port : {}'.format(
+                    clientnumber, clients[i][2], str(clients[i][0]), str(clients[i][1]))
+                    clientnumber += 1
+                else:
+                    result += '\n' + '\t' + 'Client n°{} : Adresse IP : {} \n\t\t     Numéro de port : {}'.format(
+                    clientnumber, str(clients[i][0]), str(clients[i][1]))
+                    clientnumber += 1
+
+        else:
+            result = '\n' + '\t' + 'Aucun client connecté pour le moment'
+        clientslist["connectedclients"]['Client n°{}'.format(clientnumber)] = [ip, port]
+        if len(data) == 3:
+            clientslist["connectedclients"]['Client n°{}'.format(clientnumber)] = [ip, port, data[2]]
+
+        print(clientslist)
         client.send(str(result).encode())
 
 
@@ -148,14 +162,31 @@ class Chat():
                 return
 
 if __name__ == '__main__':
+
     if len(sys.argv) == 2 and sys.argv[1] == 'server':
         AdderServer().run()
-    elif len(sys.argv) < 6 and sys.argv[1] == 'client':
+
+    elif len(sys.argv) == 5 and sys.argv[1] == 'client':
         if sys.argv[2] == 'ECAM':
-            AdderClient(sys.argv[3:]).run()
+            if len(sys.argv[3]) > len(sys.argv[4]):
+                AdderClient(sys.argv[3:]).run()
+                Chat(sys.argv[3], int(sys.argv[4])).run()
+            elif len(sys.argv[3]) < len(sys.argv[4]):
+                AdderClient(sys.argv[3:]).run()
+                Chat(sys.argv[4], int(sys.argv[3])).run()
+    elif len(sys.argv) == 6 and sys.argv[1] == 'client':
+        if sys.argv[2] == 'ECAM':
+            if len(sys.argv[3]) > len(sys.argv[4]):
+                AdderClient(sys.argv[3:]).run()
+                Chat(sys.argv[3], int(sys.argv[4])).run()
+            elif len(sys.argv[3]) < len(sys.argv[4]):
+                AdderClient(sys.argv[3:]).run()
+                Chat(sys.argv[4], int(sys.argv[3])).run()
+
         else:
             print("Veuillez entrer un mot de passe valide ou entrer la commande sous la forme :\n"
                   "'python3 adder.py client «MotDePasse» «Votre Adresse IP» «Numéro de Port»' ")
+
     elif len(sys.argv) == 4 and sys.argv[1] == 'peer':
         Chat(sys.argv[2], int(sys.argv[3])).run()
 
